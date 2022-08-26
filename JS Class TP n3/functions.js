@@ -34,13 +34,18 @@ class CEmpleado{
         this.obraSocial = obraSocial;
         this.adicional = adicional;
         //------------------------------
-        //this.sueldoBasico = sueldoBasico;
     }
     CSueldoBruto(){
-        
+        /* Sueldo Bruto = 
+        Sueldo básico + Antiguedad + IdiomaExtranjero + Titulo de Grado + Presentismo + 
+        Funcion (coordinar... etc)+ Adicionales * Objetivos + Adicionales Voluntarios. */
+        let sueldoBruto=0;
+        let sueldoBasico, sueldoAntiguedad, sueldoTitulo, sueldoPresentismo, sueldoFuncion, sueldoAdicional, sueldoObjetivos;
+        sueldoBruto = sueldoBasico + sueldoAntiguedad + sueldoTitulo + sueldoPresentismo + sueldoFuncion + (sueldoAdicional * sueldoObjetivos) + this.adicional;
+        return sueldoBruto;
     }
     CRetenciones(){
-        let retencionTotal;
+        let retencionTotal=0;
         if(this.jubilacion==true)
             retencionTotal=retencionTotal + (this.sueldoBasico/100*11);
         if(this.obraSocial==true)
@@ -49,15 +54,14 @@ class CEmpleado{
             retencionTotal=retencionTotal + (this.sueldoBasico/100*1);
         return retencionTotal;
     }
-    //CSueldoNeto(){ return this.CsueldoBruto() - this.CRetenciones() + this.adicional; }
+    CSueldoNeto(){ return this.CsueldoBruto() - this.CRetenciones(); }
 }
 
 let Empleados = [];
 let i = 0;
-function CrearEmpleado(nombreC, categoria, antiguedad, idioma, hijosG, presentismo, km, funcion, sindicato, adicional){
-    Empleados.push(new CEmpleado(nombreC, categoria, antiguedad, idioma, hijosG, presentismo, km, funcion, sindicato, adicional));
-    Empleados.forEach(function(nombreC, categoria, antiguedad, idioma, hijosG, presentismo, km, funcion, sindicato, adicional) {
-        console.log(nombreC, categoria, antiguedad, idioma, hijosG, presentismo, km, funcion, sindicato, adicional);
+function CrearEmpleado(nombreC, categoria, antiguedad, idioma, hijosG, presentismo, km, funcion, sindicato, jubilacion, obraSocial, adicional){
+    Empleados.push(new CEmpleado(nombreC, categoria, antiguedad, idioma, hijosG, presentismo, km, funcion, sindicato, jubilacion, obraSocial, adicional));
+    Empleados.forEach(function(){
         document.getElementById("tablaM").innerHTML =
         document.getElementById("tablaM").innerHTML + 
         ' <tr> <td><label>' + Empleados[i].nombreC + 
@@ -72,7 +76,7 @@ function CrearEmpleado(nombreC, categoria, antiguedad, idioma, hijosG, presentis
         '</label></td> <td><label>' + TrueFalse(Empleados[i].jubilacion) + 
         '</label></td> <td><label>' + TrueFalse(Empleados[i].obraSocial) + 
         '</label></td> <td><label>' + '$' + Empleados[i].adicional + 
-        '</label></td> <td><label>' + '$' + '' + 
+        '</label></td> <td><label>' + '$' + Empleados[i].CRetenciones() + 
         '</label></td> </tr> '
         i++;
     })
